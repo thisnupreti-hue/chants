@@ -211,6 +211,113 @@
       color: var(--deep-night);
     }
 
+    /* Delete button on mantra */
+    .mantra-delete {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: rgba(220, 60, 60, 0.15);
+      border: 1px solid rgba(220, 60, 60, 0.3);
+      color: #ff6b6b;
+      font-size: 14px;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-left: 4px;
+      opacity: 0;
+      transform: scale(0.8);
+    }
+    .mantra-item:hover .mantra-delete,
+    .mantra-item.show-delete .mantra-delete {
+      opacity: 1;
+      transform: scale(1);
+    }
+    .mantra-delete:active {
+      background: rgba(220, 60, 60, 0.35);
+      border-color: #ff6b6b;
+      transform: scale(0.9);
+    }
+
+    /* Edit mode toggle */
+    .edit-toggle {
+      font-size: 11px;
+      letter-spacing: 2px;
+      color: var(--gold-dim);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 2px 6px;
+      font-family: 'Crimson Pro', serif;
+      transition: color 0.2s;
+    }
+    .edit-toggle.active { color: #ff6b6b; }
+
+    /* Confirm delete overlay */
+    .confirm-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+      z-index: 200;
+      display: flex; align-items: center; justify-content: center;
+      padding: 20px;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .confirm-overlay.open { opacity: 1; pointer-events: all; }
+    .confirm-box {
+      background: linear-gradient(180deg, var(--twilight), var(--midnight));
+      border: 1px solid rgba(220,60,60,0.3);
+      border-radius: 20px;
+      padding: 28px 24px;
+      text-align: center;
+      width: 100%; max-width: 320px;
+      transform: scale(0.9);
+      transition: transform 0.2s;
+    }
+    .confirm-overlay.open .confirm-box { transform: scale(1); }
+    .confirm-icon { font-size: 36px; margin-bottom: 12px; }
+    .confirm-title {
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 15px;
+      color: #ff6b6b;
+      margin-bottom: 8px;
+    }
+    .confirm-msg {
+      font-size: 14px;
+      color: var(--cream-dim);
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+    .confirm-mantra-name {
+      color: var(--gold-light);
+      font-style: italic;
+    }
+    .confirm-actions { display: flex; gap: 10px; }
+    .confirm-delete {
+      flex: 1;
+      background: linear-gradient(135deg, #c0392b, #e74c3c);
+      border: none;
+      border-radius: 12px;
+      padding: 13px;
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 12px;
+      color: white;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+    .confirm-delete:active { opacity: 0.8; }
+    .confirm-keep {
+      flex: 1;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(201,162,39,0.2);
+      border-radius: 12px;
+      padding: 13px;
+      font-size: 13px;
+      color: var(--cream-dim);
+      font-family: 'Crimson Pro', serif;
+      cursor: pointer;
+    }
+
     /* Add custom mantra */
     .add-btn {
       width: 100%;
@@ -380,7 +487,46 @@
       50% { transform: scale(1.12); }
       100% { transform: scale(1); }
     }
-    .count-of { font-size: 12px; color: var(--cream-dim); letter-spacing: 1px; margin-top: 2px; }
+    .count-of {
+      font-size: 12px; color: var(--cream-dim); letter-spacing: 1px; margin-top: 2px;
+      cursor: pointer;
+      border-bottom: 1px dashed rgba(201,162,39,0.4);
+      padding-bottom: 1px;
+      transition: color 0.2s;
+    }
+    .count-of:active { color: var(--gold); }
+
+    /* Inline count editor inside ring */
+    .count-edit-wrap {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    .count-edit-wrap.show { display: flex; }
+    .count-edit-input {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid var(--gold);
+      border-radius: 10px;
+      color: var(--gold-light);
+      font-family: 'Cinzel Decorative', serif;
+      font-size: 28px;
+      width: 90px;
+      text-align: center;
+      padding: 4px 0;
+      outline: none;
+    }
+    .count-edit-ok {
+      background: linear-gradient(135deg, var(--saffron), var(--gold));
+      border: none;
+      border-radius: 8px;
+      padding: 5px 16px;
+      font-family: 'Crimson Pro', serif;
+      font-size: 13px;
+      color: var(--deep-night);
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
 
     /* Mantra text */
     .mantra-card {
@@ -427,7 +573,7 @@
       padding: 6px 0;
     }
     .bead {
-      width: 16px; height: 16px;
+      width: var(--bead-size, 16px); height: var(--bead-size, 16px);
       border-radius: 50%;
       background: rgba(201,162,39,0.12);
       border: 1px solid rgba(201,162,39,0.2);
@@ -469,6 +615,26 @@
     }
     .completed-banner.show { display: block; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+
+    /* Round badge */
+    .round-badge {
+      display: inline-flex; align-items: center; gap: 5px;
+      background: rgba(62,207,207,0.1);
+      border: 1px solid rgba(62,207,207,0.3);
+      border-radius: 20px;
+      padding: 3px 10px;
+      font-size: 11px;
+      color: var(--turquoise);
+      letter-spacing: 1px;
+      margin-top: 2px;
+      transition: all 0.3s;
+    }
+    .round-badge.pulse { animation: roundPulse 0.5s ease; }
+    @keyframes roundPulse {
+      0% { transform: scale(1); }
+      40% { transform: scale(1.18); background: rgba(62,207,207,0.25); }
+      100% { transform: scale(1); }
+    }
 
     .tap-btn {
       width: 120px; height: 120px;
@@ -635,7 +801,10 @@
 
   <!-- Choose Mantra -->
   <div class="section">
-    <div class="section-label">✦ Choose Your Mantra</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;padding:0 4px">
+      <div class="section-label" style="margin-bottom:0">✦ Choose Your Mantra</div>
+      <button class="edit-toggle" id="editToggle">EDIT</button>
+    </div>
     <div class="mantra-list" id="mantraList"></div>
     <button class="add-btn" id="addMantraBtn" style="margin-top:8px">
       ✦ Add Custom Mantra
@@ -688,9 +857,14 @@
       </svg>
       <div class="ring-inner">
         <div class="current-count" id="currentCount">0</div>
-        <div class="count-of" id="countOf">of 108</div>
+        <div class="count-of" id="countOf" title="Tap to edit">of 108 ✎</div>
+        <div class="count-edit-wrap" id="countEditWrap">
+          <input class="count-edit-input" type="number" id="countEditInput" min="1" max="9999" value="108"/>
+          <button class="count-edit-ok" id="countEditOk">Set</button>
+        </div>
       </div>
     </div>
+    <div class="round-badge" id="roundBadge">🔄 Round 1</div>
 
     <!-- Mantra text -->
     <div class="mantra-card">
@@ -719,6 +893,19 @@
         <span class="icon">✓</span>
         <span>Done</span>
       </button>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Delete Modal -->
+<div class="confirm-overlay" id="confirmOverlay">
+  <div class="confirm-box">
+    <div class="confirm-icon">🗑️</div>
+    <div class="confirm-title">Remove Mantra?</div>
+    <div class="confirm-msg">Are you sure you want to remove<br><span class="confirm-mantra-name" id="confirmMantraName"></span>?</div>
+    <div class="confirm-actions">
+      <button class="confirm-keep" id="confirmKeep">Keep It</button>
+      <button class="confirm-delete" id="confirmDelete">Remove</button>
     </div>
   </div>
 </div>
@@ -777,6 +964,7 @@ let state = {
   selectedMantraId: null,
   targetCount: 108,
   currentCount: 0,
+  currentRound: 1,
   totalCount: parseInt(localStorage.getItem('totalCount') || '0'),
 };
 
@@ -803,25 +991,49 @@ function initStars() {
   }
 }
 
+// ===== EDIT MODE =====
+let editMode = false;
+let pendingDeleteId = null;
+
+document.getElementById('editToggle').addEventListener('click', () => {
+  editMode = !editMode;
+  document.getElementById('editToggle').classList.toggle('active', editMode);
+  document.getElementById('editToggle').textContent = editMode ? 'DONE' : 'EDIT';
+  renderMantras();
+});
+
 // ===== RENDER MANTRAS =====
 function renderMantras() {
   const list = document.getElementById('mantraList');
   list.innerHTML = '';
   state.mantras.forEach(m => {
     const el = document.createElement('div');
-    el.className = 'mantra-item' + (state.selectedMantraId === m.id ? ' selected' : '');
+    el.className = 'mantra-item show-delete' + (state.selectedMantraId === m.id ? ' selected' : '');
     el.innerHTML = `
+      ${editMode ? `<button class="mantra-delete" data-id="${m.id}" title="Delete">✕</button>` : ''}
       <span class="mantra-icon">${m.icon}</span>
       <div class="mantra-info">
         <div class="mantra-name">${m.name}</div>
         <div class="mantra-preview">${m.text.split('\n')[0].substring(0, 40)}…</div>
       </div>
-      <div class="mantra-check">${state.selectedMantraId === m.id ? '✓' : ''}</div>
+      ${!editMode ? `<div class="mantra-check">${state.selectedMantraId === m.id ? '✓' : ''}</div>` : ''}
     `;
-    el.addEventListener('click', () => {
-      state.selectedMantraId = m.id;
-      renderMantras();
-    });
+    if (!editMode) {
+      el.addEventListener('click', () => {
+        state.selectedMantraId = m.id;
+        renderMantras();
+      });
+    }
+    // Delete button
+    const delBtn = el.querySelector('.mantra-delete');
+    if (delBtn) {
+      delBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        pendingDeleteId = m.id;
+        document.getElementById('confirmMantraName').textContent = m.name;
+        document.getElementById('confirmOverlay').classList.add('open');
+      });
+    }
     list.appendChild(el);
   });
 }
@@ -856,20 +1068,81 @@ function updateHomeTotals() {
 function buildBeads() {
   const wrap = document.getElementById('malaBeads');
   wrap.innerHTML = '';
-  const total = Math.min(state.targetCount, 54);
-  for (let i = 0; i < total; i++) {
+  const total = state.targetCount;
+
+  // Dynamically size beads so they fit nicely regardless of count
+  // Max ~54 visible beads; for higher counts group them
+  let beadCount, groupSize;
+  if (total <= 27) {
+    beadCount = total; groupSize = 1;
+  } else if (total <= 54) {
+    beadCount = total; groupSize = 1;
+  } else if (total <= 108) {
+    beadCount = Math.min(total, 54); groupSize = Math.ceil(total / beadCount);
+  } else if (total <= 216) {
+    beadCount = 54; groupSize = Math.ceil(total / 54);
+  } else {
+    beadCount = 54; groupSize = Math.ceil(total / 54);
+  }
+
+  // Bead size: fewer beads = bigger
+  let beadSize = 16;
+  if (beadCount <= 11) beadSize = 24;
+  else if (beadCount <= 27) beadSize = 18;
+  else if (beadCount <= 54) beadSize = 14;
+  else beadSize = 12;
+
+  wrap.style.setProperty('--bead-size', beadSize + 'px');
+  wrap.style.gap = (beadSize <= 12 ? '3px' : '4px');
+
+  for (let i = 0; i < beadCount; i++) {
     const b = document.createElement('div');
-    b.className = 'bead' + (i < state.currentCount ? ' lit' : '');
+    const filledUpTo = Math.floor(state.currentCount / groupSize);
+    b.className = 'bead' + (i < filledUpTo ? ' lit' : '');
     b.id = `bead-${i}`;
     wrap.appendChild(b);
   }
+
+  // Store for lightBead
+  wrap._beadCount = beadCount;
+  wrap._groupSize = groupSize;
 }
 
-function lightBead(n) {
-  const beadIdx = Math.min(n - 1, 53);
+function lightBead(currentVal) {
+  const wrap = document.getElementById('malaBeads');
+  const groupSize = wrap._groupSize || 1;
+  const beadIdx = Math.floor((currentVal - 1) / groupSize);
   const b = document.getElementById(`bead-${beadIdx}`);
-  if (b) b.classList.add('lit');
+  if (b && !b.classList.contains('lit')) b.classList.add('lit');
 }
+
+// ===== EDIT COUNT IN COUNTER SCREEN =====
+document.getElementById('countOf').addEventListener('click', () => {
+  document.getElementById('countEditInput').value = state.targetCount;
+  document.getElementById('countOf').style.display = 'none';
+  document.getElementById('currentCount').style.display = 'none';
+  document.getElementById('countEditWrap').classList.add('show');
+  document.getElementById('countEditInput').focus();
+});
+
+function applyCountEdit() {
+  const val = parseInt(document.getElementById('countEditInput').value);
+  if (!val || val < 1) return;
+  state.targetCount = val;
+  state.currentCount = 0;
+  state.currentRound = 1;
+  document.getElementById('countEditWrap').classList.remove('show');
+  document.getElementById('countOf').style.display = '';
+  document.getElementById('currentCount').style.display = '';
+  document.getElementById('completedBanner').classList.remove('show');
+  buildBeads();
+  updateProgress();
+}
+
+document.getElementById('countEditOk').addEventListener('click', applyCountEdit);
+document.getElementById('countEditInput').addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') applyCountEdit();
+});
 
 // ===== PROGRESS =====
 const CIRCUM = 553;
@@ -880,6 +1153,7 @@ function updateProgress() {
   document.getElementById('currentCount').textContent = state.currentCount;
   document.getElementById('countOf').textContent = `of ${state.targetCount}`;
   document.getElementById('counterTotal').textContent = state.totalCount.toLocaleString();
+  document.getElementById('roundBadge').textContent = `🔄 Round ${state.currentRound}`;
 }
 
 // ===== START =====
@@ -891,6 +1165,7 @@ document.getElementById('startBtn').addEventListener('click', () => {
   }
   const mantra = state.mantras.find(m => m.id === state.selectedMantraId);
   state.currentCount = 0;
+  state.currentRound = 1;
   document.getElementById('activeMantraName').textContent = mantra.name;
   document.getElementById('activeMantraText').textContent = mantra.text;
   document.getElementById('counterTitle').textContent = mantra.name.toUpperCase();
@@ -902,13 +1177,34 @@ document.getElementById('startBtn').addEventListener('click', () => {
 
 // ===== TAP BUTTON =====
 document.getElementById('tapBtn').addEventListener('click', (e) => {
-  if (state.currentCount >= state.targetCount) return;
   state.currentCount++;
   state.totalCount++;
   saveState();
+
+  // Check if a round just completed
+  if (state.currentCount > 0 && state.currentCount % state.targetCount === 0) {
+    state.currentRound++;
+    // Flash completed banner briefly then reset beads
+    document.getElementById('completedBanner').classList.add('show');
+    if (navigator.vibrate) navigator.vibrate([100, 50, 100, 50, 100]);
+    setTimeout(() => {
+      document.getElementById('completedBanner').classList.remove('show');
+      state.currentCount = 0;
+      buildBeads();
+      updateProgress();
+      // Pulse the round badge
+      const badge = document.getElementById('roundBadge');
+      badge.classList.remove('pulse');
+      void badge.offsetWidth;
+      badge.classList.add('pulse');
+    }, 900);
+  } else {
+    lightBead(state.currentCount % state.targetCount || state.targetCount);
+    if (navigator.vibrate) navigator.vibrate(10);
+  }
+
   updateProgress();
   updateHomeTotals();
-  lightBead(state.currentCount);
 
   // bump animation
   const el = document.getElementById('currentCount');
@@ -923,18 +1219,12 @@ document.getElementById('tapBtn').addEventListener('click', (e) => {
   r.style.top = e.clientY + 'px';
   document.body.appendChild(r);
   setTimeout(() => r.remove(), 500);
-
-  if (state.currentCount >= state.targetCount) {
-    document.getElementById('completedBanner').classList.add('show');
-    if (navigator.vibrate) navigator.vibrate([100, 50, 100]);
-  } else {
-    if (navigator.vibrate) navigator.vibrate(10);
-  }
 });
 
 // ===== RESET =====
 document.getElementById('resetBtn').addEventListener('click', () => {
   state.currentCount = 0;
+  state.currentRound = 1;
   document.getElementById('completedBanner').classList.remove('show');
   buildBeads();
   updateProgress();
@@ -957,6 +1247,24 @@ function showScreen(name) {
   document.getElementById('home').classList.toggle('hidden', name !== 'home');
   document.getElementById('counter').classList.toggle('hidden', name !== 'counter');
 }
+
+// ===== CONFIRM DELETE =====
+document.getElementById('confirmKeep').addEventListener('click', () => {
+  document.getElementById('confirmOverlay').classList.remove('open');
+  pendingDeleteId = null;
+});
+document.getElementById('confirmDelete').addEventListener('click', () => {
+  if (pendingDeleteId !== null) {
+    state.mantras = state.mantras.filter(m => m.id !== pendingDeleteId);
+    if (state.selectedMantraId === pendingDeleteId) {
+      state.selectedMantraId = state.mantras.length > 0 ? state.mantras[0].id : null;
+    }
+    saveState();
+    renderMantras();
+    pendingDeleteId = null;
+  }
+  document.getElementById('confirmOverlay').classList.remove('open');
+});
 
 // ===== MODAL =====
 document.getElementById('addMantraBtn').addEventListener('click', () => {
