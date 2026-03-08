@@ -1,0 +1,17 @@
+{
+  "name": "Mantra Counter",
+  "short_name": "Mantra",
+  "description": "Sacred chanting counter for Vedic mantras",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1a0a2e",
+  "theme_color": "#c9a227",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'><rect width='192' height='192' fill='%231a0a2e'/><text y='140' x='20' font-size='140'>🕉️</text></svg>",
+      "sizes": "192x192",
+      "type": "image/svg+xml"
+    }
+  ]
+}
